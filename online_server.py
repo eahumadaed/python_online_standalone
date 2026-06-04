@@ -18,7 +18,7 @@ from fastapi import FastAPI, Response
 
 # Edit these values directly if you do not want to use environment variables.
 # Use "0.0.0.0:9143" to listen on every local network interface.
-API_BIND = os.getenv("API_BIND", "127.0.0.1:9143")
+API_BIND = os.getenv("API_BIND", "0.0.0.0:9143")
 ONLINE_EGRESS_IPS_CONFIG = os.getenv("ONLINE_EGRESS_IPS", "")
 ONLINE_EGRESS_IFACE = os.getenv("ONLINE_EGRESS_IFACE", "")
 DH_MAIN_SERVER = os.getenv("DH_MAIN_SERVER", "www.easy4ipcloud.com")
@@ -81,8 +81,10 @@ MAIN_SERVER = DH_MAIN_SERVER
 MAIN_PORT = DH_MAIN_PORT
 UDP_TIMEOUT_SECS = DH_UDP_TIMEOUT_SECS
 
-USERNAME = os.getenv("DH_USERNAME", "")
-USERKEY = os.getenv("DH_USERKEY", "")
+DEFAULT_USERNAME = "cba1b29e32cb17aa46b8ff9e73c7f40b"
+DEFAULT_USERKEY = "996103384cdf19179e19243e959bbf8b"
+USERNAME = os.getenv("DH_USERNAME", DEFAULT_USERNAME)
+USERKEY = os.getenv("DH_USERKEY", DEFAULT_USERKEY)
 
 ONLINE_MAX_CONCURRENT = ONLINE_MAX_CONCURRENT_CONFIG
 ONLINE_WAIT_TIMEOUT_SECS = ONLINE_WAIT_TIMEOUT_SECS_CONFIG
@@ -116,8 +118,6 @@ def build_request(path: str, body: str = "", with_auth: bool = True) -> bytes:
     method = "DHPOST" if body else "DHGET"
     nonce = random.randrange(0, 2**31)
     created = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    if with_auth and (not USERNAME or not USERKEY):
-        raise RuntimeError("DH_USERNAME and DH_USERKEY are required for authenticated requests")
     password = f"{nonce}{created}DHP2P:{USERNAME}:{USERKEY}"
     digest = base64.b64encode(hashlib.sha1(password.encode("utf-8")).digest()).decode("ascii")
 

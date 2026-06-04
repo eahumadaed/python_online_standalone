@@ -4,8 +4,6 @@ Servidor HTTP minimo con solo el endpoint compatible con Rust:
 
 ```bash
 pip install -r requirements.txt
-export DH_USERNAME="..."
-export DH_USERKEY="..."
 python online_server.py
 curl -s http://127.0.0.1:9143/online/9E08CCBPAGA3EA8
 ```
@@ -24,10 +22,10 @@ Respuesta:
 
 Config editable dentro de `online_server.py` o por variables de entorno:
 
-- `API_BIND`: bind HTTP, default `127.0.0.1:9143`
+- `API_BIND`: bind HTTP, default `0.0.0.0:9143`
 - `API_BIND = "0.0.0.0:9143"`: escucha en todas las IP locales
-- `DH_USERNAME`: username WSSE para el upstream Dahua
-- `DH_USERKEY`: user key WSSE para el upstream Dahua
+- `DH_USERNAME`: override opcional del username WSSE para el upstream Dahua
+- `DH_USERKEY`: override opcional del user key WSSE para el upstream Dahua
 - `ONLINE_EGRESS_IPS`: lista IPv4 explicita, separada por coma; default vacio
 - `ONLINE_EGRESS_IFACE`: interfaz opcional para descubrir IPs; default vacio, usa todas las interfaces
 - `ONLINE_MAX_CONCURRENT`: limite de checks simultaneos, default `20`
