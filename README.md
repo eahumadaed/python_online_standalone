@@ -20,6 +20,9 @@ Respuesta:
 }
 ```
 
+Cada request consulta solo `/online/p2psrv/{serial}` en el upstream Dahua.
+El resultado se considera online cuando la respuesta es exitosa y trae un tag `US`.
+
 Config editable dentro de `online_server.py` o por variables de entorno:
 
 - `API_BIND`: bind HTTP, default `0.0.0.0:9143`

@@ -290,13 +290,6 @@ def tag_value(xml: str, tag: str) -> Optional[str]:
     return match.group(1) if match else None
 
 
-def split_host_port(value: str) -> Tuple[str, int]:
-    if ":" not in value:
-        raise ValueError(f"invalid endpoint: {value}")
-    host, port = value.rsplit(":", 1)
-    return host, int(port)
-
-
 def check_online_impl(serial: str, egress_ip: Optional[str]) -> bool:
     with bind_udp(egress_ip) as main_remote:
         p2p_info = request_required(
@@ -313,36 +306,7 @@ def check_online_impl(serial: str, egress_ip: Optional[str]) -> bool:
     if not us:
         return False
 
-    p2p_host, p2p_port = split_host_port(us)
-
-    def query_probe_info(with_auth: bool) -> Tuple[DhResponse, DhResponse]:
-        with bind_udp(egress_ip) as p2p_remote:
-            probe_response = request_required(
-                p2p_remote,
-                p2p_host,
-                p2p_port,
-                f"/probe/device/{serial}",
-                with_auth=with_auth,
-            )
-            info_response = request_required(
-                p2p_remote,
-                p2p_host,
-                p2p_port,
-                f"/info/device/{serial}",
-                with_auth=with_auth,
-            )
-        return probe_response, info_response
-
-    probe, info = query_probe_info(with_auth=True)
-    key_error_auth = probe.code == 401 and "KeyError" in probe.body
-    key_error_auth = key_error_auth or (info.code == 401 and "KeyError" in info.body)
-    if key_error_auth:
-        probe, info = query_probe_info(with_auth=False)
-
-    if probe.code >= 400 or info.code >= 400:
-        return False
-
-    return bool(info.body.strip())
+    return True
 
 
 def parse_egress_ips(value: str) -> List[str]:
