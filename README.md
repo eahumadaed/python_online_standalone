@@ -20,8 +20,8 @@ Respuesta:
 }
 ```
 
-Cada request consulta solo `/online/p2psrv/{serial}` en el upstream Dahua.
-El resultado se considera online cuando la respuesta es exitosa y trae un tag `US`.
+Cada request consulta `/online/p2psrv/{serial}` en el upstream Dahua y luego valida el servidor P2P devuelto con `/probe/device/{serial}` y `/info/device/{serial}`.
+El resultado se considera online solo cuando esa segunda validacion responde correctamente y trae informacion del equipo.
 
 Config editable dentro de `online_server.py` o por variables de entorno:
 
