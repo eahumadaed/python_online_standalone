@@ -51,3 +51,12 @@ Compatible con Python 3.6+. En servidores con paquetes globales viejos o mezclad
 ```bash
 python3 -m pip install --upgrade --force-reinstall -r requirements.txt
 ```
+
+## Support
+
+If this project saved you time, rescued a late-night debugging session, or made your server behave for once, you can invite me a coffee:
+
+- [GitHub Sponsors](https://github.com/sponsors/eahumadaed)
+- [Ko-fi](https://ko-fi.com/edinsonahumada)
+
+No pressure, just caffeine-powered open source.
